@@ -18,7 +18,7 @@ void Help() {
 		"- Enter two numbers of your elements list to combine them." << std::endl <<
 		"- Enter the word 'add' and the number of an element to add a new instance of that element." << std::endl <<
 		"- Enter 'add basics' to add new instances of the 4 basic elements." << std::endl <<
-		"- Enter the word 'delete and the number of an element to erase it from your list." << std::endl <<
+		"- Enter the word 'delete' and the number of an element to erase it from your list." << std::endl <<
 		"- Enter the word 'info' and the number of an element to get information about it in the explorer." << std::endl <<
 		"- Enter the word 'sort' to sort by alphabetical order the elements in the list." << std::endl <<
 		"- Enter the word 'clean' to delete all the instances of repeated elements." << std::endl <<
