@@ -4,6 +4,7 @@
 #include <vector>
 #include <unordered_set>
 #include <set>
+#include <algorithm>
 #include <windows.h>
 #include <iostream>
 
@@ -78,7 +79,7 @@ int main() {
 		//RECIBE UNA INSTRUCCION DEL JUGADOR
 		std::cin >> instruction;
 		if (instruction == "sort") {
-
+			std::sort(inventory.begin(), inventory.end());
 		}
 		else if (instruction == "help") {
 			//EL JUGADOR NECESITA AYUDA
