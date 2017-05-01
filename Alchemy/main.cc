@@ -187,43 +187,45 @@ int main() {
 				}
 				//Si no es ninguna de estas, el usuario intenta combinar dos elementos, por lo que la primera instruccioçón también es un int
 				else {
-
+					
 					aux2 = atoi(instruction.c_str()) - 1;
-
-					//Busca si existe en el mapa de los elementos uno que se forme combinando los dos que el usuario indica
-					if (allElements.find(inventory[aux] + " + " + inventory[aux2]) != allElements.end()) {
-						keyFound = inventory[aux] + " + " + inventory[aux2];
-						elementCombination = true;
-					}
-					else if (allElements.find(inventory[aux2] + " + " + inventory[aux]) != allElements.end()) {
-						keyFound = inventory[aux2] + " + " + inventory[aux];
-						elementCombination = true;
-					}
-					//Si no es así, la combinación fracasa, si no, se guarda el string de los elementos combinados
-					else {
-						combinationFailure = true;
-						elementCombination = false;
-					}
-					//Si la combinación es un éxito se busca si el elemento ha sido encontrado antes por el jugador
-					if (elementCombination) {
-						//Si es así se añade un punto y se inserta en el unordered_set, además de activar el mensaje en la siguiente impresión
-						if (found.find(allElements[keyFound]) == found.end()) {
-							score++;
-							found.insert(allElements[keyFound]);
-							newElement = true;
+					//Si los números introducidos son menores que el tamaño del inventario y mayores que 0
+					if (aux < inventory.size() && aux > 0 && aux2 < inventory.size() && aux2 > 0 ) {
+						//Busca si existe en el mapa de los elementos uno que se forme combinando los dos que el usuario indica
+						if (allElements.find(inventory[aux] + " + " + inventory[aux2]) != allElements.end()) {
+							keyFound = inventory[aux] + " + " + inventory[aux2];
+							elementCombination = true;
 						}
-						//Se añade al inventario el nuevo elemento
-						inventory.push_back(allElements[keyFound]);
+						else if (allElements.find(inventory[aux2] + " + " + inventory[aux]) != allElements.end()) {
+							keyFound = inventory[aux2] + " + " + inventory[aux];
+							elementCombination = true;
+						}
+						//Si no es así, la combinación fracasa, si no, se guarda el string de los elementos combinados
+						else {
+							combinationFailure = true;
+							elementCombination = false;
+						}
+						//Si la combinación es un éxito se busca si el elemento ha sido encontrado antes por el jugador
+						if (elementCombination) {
+							//Si es así se añade un punto y se inserta en el unordered_set, además de activar el mensaje en la siguiente impresión
+							if (found.find(allElements[keyFound]) == found.end()) {
+								score++;
+								found.insert(allElements[keyFound]);
+								newElement = true;
+							}
+							//Se añade al inventario el nuevo elemento
+							inventory.push_back(allElements[keyFound]);
 
-					}
-					//Se realiza una comprobación del orden en el que los elementos deben ser borrados para que no borre fuera de los límites del vector y se borran
-					if (aux2 < aux) {
-						inventory.erase(inventory.begin() + aux);
-						inventory.erase(inventory.begin() + aux2);
-					}
-					else {
-						inventory.erase(inventory.begin() + aux2);
-						inventory.erase(inventory.begin() + aux);
+						}
+						//Se realiza una comprobación del orden en el que los elementos deben ser borrados para que no borre fuera de los límites del vector y se borran
+						if (aux2 < aux) {
+							inventory.erase(inventory.begin() + aux);
+							inventory.erase(inventory.begin() + aux2);
+						}
+						else {
+							inventory.erase(inventory.begin() + aux2);
+							inventory.erase(inventory.begin() + aux);
+						}
 					}
 				}
 			}
