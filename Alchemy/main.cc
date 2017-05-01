@@ -5,6 +5,7 @@
 #include <unordered_set>
 #include <set>
 #include <algorithm>
+#include <cstdlib>
 #include <windows.h>
 #include <iostream>
 
@@ -57,9 +58,13 @@ int main() {
 	std::string subInstruction;
 	std::string urlBegin = "https://en.wikipedia.org/wiki/";
 	std::string url;
+	std::string keyFound;
 	int aux;
 	int aux2;
 	bool helpNeeded = true;
+	bool elementCombination;
+	bool newElement = false;
+	bool combinationFailure = false;
 
 	while (true)
 	{
@@ -67,6 +72,14 @@ int main() {
 		if (helpNeeded) {
 			Help();
 			helpNeeded = false;
+		}
+		if (newElement) {
+			std::cout << "New element found: " << allElements[keyFound] << std::endl << std::endl;
+			newElement = false;
+		}
+		if (combinationFailure) {
+			std::cout << "Combination failure, try again!" << std::endl << std::endl;
+			combinationFailure = false;
 		}
 		//IMPRIME LOS DATOS ACTUALES DEL JUEGO
 		std::cout << "Your current score: " << score << std::endl <<
@@ -110,22 +123,54 @@ int main() {
 			}
 			else {
 				aux = atoi(subInstruction.c_str()) - 1;
-			}
-			if (instruction == "delete") {
+				if (instruction == "delete") {
 
-				inventory.erase(inventory.begin() + aux);
+					inventory.erase(inventory.begin() + aux);
 
-			}
-			else if (instruction == "info") {
+				}
+				else if (instruction == "info") {
 
-				url = urlBegin + inventory[aux];
-				ShellExecuteA(nullptr, "open", url.c_str(), nullptr, nullptr, SW_SHOWNORMAL);
+					url = urlBegin + inventory[aux];
+					ShellExecuteA(nullptr, "open", url.c_str(), nullptr, nullptr, SW_SHOWNORMAL);
 
-			}
-			else {
+				}
+				else {
 
-				aux2 = atoi(instruction.c_str() - 1);
+					aux2 = atoi(instruction.c_str()) - 1;
+					if (allElements.find(inventory[aux] + " + " + inventory[aux2]) != allElements.end()) {
+						keyFound = inventory[aux] + " + " + inventory[aux2];
+						elementCombination = true;
+					}
+					else if (allElements.find(inventory[aux2] + " + " + inventory[aux]) != allElements.end()) {
+						keyFound = inventory[aux2] + " + " + inventory[aux];
+						elementCombination = true;
+					}
+					else {
+						combinationFailure = true;
+						elementCombination = false;
+					}
+					if (elementCombination) {
+						if (found.find(allElements[keyFound]) == found.end()) {
+							score++;
+							found.insert(allElements[keyFound]);
+							newElement = true;
+						}
+						else {
+							newElement = false;
+						}
 
+						inventory.push_back(allElements[keyFound]);
+
+					}
+					if (aux2 < aux) {
+						inventory.erase(inventory.begin() + aux);
+						inventory.erase(inventory.begin() + aux2);
+					}
+					else {
+						inventory.erase(inventory.begin() + aux2);
+						inventory.erase(inventory.begin() + aux);
+					}
+				}
 			}
 		}
 
@@ -134,7 +179,6 @@ int main() {
 		// extracts characters from the input buffer and discards them
 		std::cin.ignore(std::cin.rdbuf()->in_avail());
 		
-
 	}
 
 	return 0;
