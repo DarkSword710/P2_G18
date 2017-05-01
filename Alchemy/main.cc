@@ -3,11 +3,16 @@
 #include <unordered_map>
 #include <vector>
 #include <unordered_set>
+#include <set>
 #include <windows.h>
 #include <iostream>
 
 void Help() {
-	std::cout << "- Enter two numbers of your elements list to combine them." << std::endl <<
+
+	std::cout << "------------------" << std::endl <<
+		"FULLENTI ALCHEMIST" << std::endl <<
+		"------------------" << std::endl <<
+		"- Enter two numbers of your elements list to combine them." << std::endl <<
 		"- Enter the word 'add' and the number of an element to add a new instance of that element." << std::endl <<
 		"- Enter 'add basics' to add new instances of the 4 basic elements." << std::endl <<
 		"- Enter the word 'delete and the number of an element to erase it from your list." << std::endl <<
@@ -44,21 +49,24 @@ int main() {
 
 	std::vector<std::string>basics({ "Air", "Earth", "Fire", "Water" });
 	std::vector<std::string>inventory(basics);
-	std::unordered_set<std::string>found;
+	std::unordered_set<std::string>found (basics.begin(), basics.end());
+	std::set<std::string>cleaner;
 	int score = 0;
 	std::string instruction;
 	std::string subInstruction;
 	std::string urlBegin = "https://en.wikipedia.org/wiki/";
 	std::string url;
 	int aux;
-
-	std::cout << "------------------" << std::endl <<
-		"FULLENTI ALCHEMIST" << std::endl <<
-		"------------------" << std::endl;
-	Help();
+	int aux2;
+	bool helpNeeded = true;
 
 	while (true)
 	{
+		//EN LA PRIMERA ITERACIÓN O SI EL JUGADOR NECESITA AYUDA IMPRIME LOS COMANDOS BÁSICOS JUNTO CON LA PANTALLA DE TÍTULO
+		if (helpNeeded) {
+			Help();
+			helpNeeded = false;
+		}
 		//IMPRIME LOS DATOS ACTUALES DEL JUEGO
 		std::cout << "Your current score: " << score << std::endl <<
 			"You have these elements:" << std::endl;
@@ -73,7 +81,18 @@ int main() {
 
 		}
 		else if (instruction == "help") {
-
+			//EL JUGADOR NECESITA AYUDA
+			helpNeeded = true;
+		}
+		else if (instruction == "clean") {
+			for (int i = 0; i < inventory.size(); i++) {
+				cleaner.insert(inventory[i]);
+			}
+			inventory.clear();
+			for (auto it = cleaner.begin(); it != cleaner.end(); it++) {
+				inventory.push_back(*it);
+			}
+			cleaner.clear();
 		}
 		else {
 			std::cin >> subInstruction;
@@ -84,7 +103,7 @@ int main() {
 					}
 				}
 				else {
-					aux = atoi(subInstruction.c_str() - 1);
+					aux = atoi(subInstruction.c_str()) - 1;
 					inventory.push_back(inventory[aux]);
 				}
 			}
@@ -104,9 +123,12 @@ int main() {
 			}
 			else {
 
+				aux2 = atoi(instruction.c_str() - 1);
+
 			}
 		}
 
+		system("cls");
 		std::cin.clear(); // clears all error state flags
 		// extracts characters from the input buffer and discards them
 		std::cin.ignore(std::cin.rdbuf()->in_avail());
