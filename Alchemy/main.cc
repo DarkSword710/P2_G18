@@ -190,7 +190,7 @@ int main() {
 					
 					aux2 = atoi(instruction.c_str()) - 1;
 					//Si los números introducidos son menores que el tamaño del inventario y mayores que 0
-					if (aux < inventory.size() && aux > 0 && aux2 < inventory.size() && aux2 > 0 ) {
+					if (aux < inventory.size() && aux >= 0 && aux2 < inventory.size() && aux2 >= 0 ) {
 						//Busca si existe en el mapa de los elementos uno que se forme combinando los dos que el usuario indica
 						if (allElements.find(inventory[aux] + " + " + inventory[aux2]) != allElements.end()) {
 							keyFound = inventory[aux] + " + " + inventory[aux2];
