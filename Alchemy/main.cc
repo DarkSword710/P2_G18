@@ -215,16 +215,16 @@ int main() {
 							}
 							//Se añade al inventario el nuevo elemento
 							inventory.push_back(allElements[keyFound]);
+							//Se realiza una comprobación del orden en el que los elementos deben ser borrados para que no borre fuera de los límites del vector y se borran
+							if (aux2 < aux) {
+								inventory.erase(inventory.begin() + aux);
+								inventory.erase(inventory.begin() + aux2);
+							}
+							else {
+								inventory.erase(inventory.begin() + aux2);
+								inventory.erase(inventory.begin() + aux);
+							}
 
-						}
-						//Se realiza una comprobación del orden en el que los elementos deben ser borrados para que no borre fuera de los límites del vector y se borran
-						if (aux2 < aux) {
-							inventory.erase(inventory.begin() + aux);
-							inventory.erase(inventory.begin() + aux2);
-						}
-						else {
-							inventory.erase(inventory.begin() + aux2);
-							inventory.erase(inventory.begin() + aux);
 						}
 					}
 				}
